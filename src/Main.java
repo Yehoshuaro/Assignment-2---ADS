@@ -1,43 +1,33 @@
-import java.util.Scanner;
-import java.util.Stack;
-
 public class Main {
-
-    public static void reverseStack(Stack<Integer> stack) {
-        if (!stack.isEmpty()) {
-            int top = stack.pop();
-            reverseStack(stack);
-            insert_at_Bottom(stack, top);
+    public static int WithoutSamsa(int[] studentPreferences, int[] samsas) {
+        int circularSamsaLovers = 0;
+        int squareSamsaLovers = 0;
+        int totalStudents = samsas.length;
+        for (int preference : studentPreferences) {
+            if (preference == 1) {
+                squareSamsaLovers++;
+            } else {
+                circularSamsaLovers++;
+            }
         }
-    }
-    private static void insert_at_Bottom(Stack<Integer> stack, int item) {
-        if (stack.isEmpty()) {
-            stack.push(item);
-        } else {
-            insert_at_Bottom(stack, stack.pop());
-            stack.push(item);
+        for (int i = 0; i < totalStudents; i++) {
+            if (samsas[i] == 0 && circularSamsaLovers > 0) {
+                circularSamsaLovers--;
+            }
+            else if (samsas[i] == 1 && squareSamsaLovers > 0) {
+                squareSamsaLovers--;
+            }
+            else {
+                return totalStudents - i;
+            }
         }
+        return 0;
     }
-
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        String[] elements = input.split("\\s+");
-
-        Stack<Integer> stack = new Stack<>();
-        for (String element : elements) {
-            stack.push(Integer.parseInt(element));
-        }
-
-        reverseStack(stack);
-        while (!stack.isEmpty()) {
-            System.out.print(stack.pop() + " ");
-        }
-        System.out.println();
+        int[] studentPreferences = {1, 1, 0, 0};
+        int[] samsas = {0, 0, 1, 0};
+        System.out.println(WithoutSamsa(studentPreferences, samsas));
     }
 }
-
-
 
 
