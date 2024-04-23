@@ -1,34 +1,43 @@
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
+
+    public static void reverseStack(Stack<Integer> stack) {
+        if (!stack.isEmpty()) {
+            int top = stack.pop();
+            reverseStack(stack);
+            insert_at_Bottom(stack, top);
+        }
+    }
+    private static void insert_at_Bottom(Stack<Integer> stack, int item) {
+        if (stack.isEmpty()) {
+            stack.push(item);
+        } else {
+            insert_at_Bottom(stack, stack.pop());
+            stack.push(item);
+        }
+    }
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int N = scanner.nextInt();
+        String input = scanner.nextLine();
+        String[] elements = input.split("\\s+");
 
-        int[] shelf = new int[2 * N];
-        int left = N - 1, right = N;
-
-        for (int i = 0; i < N; i++) {
-            int operation = scanner.nextInt();
-
-            if (operation == 1 || operation == 2){
-                int diskNumber = scanner.nextInt();
-                if (operation == 1) {
-                    shelf[left--] = diskNumber;
-                } else {
-                    shelf[right++] = diskNumber;
-                }
-            }
-            else{
-                if (operation == 3) {
-                    System.out.print(shelf[++left] + " ");
-                } else {
-                    System.out.print(shelf[--right] + " ");
-                }
-            }
+        Stack<Integer> stack = new Stack<>();
+        for (String element : elements) {
+            stack.push(Integer.parseInt(element));
         }
-        scanner.close();
+
+        reverseStack(stack);
+        while (!stack.isEmpty()) {
+            System.out.print(stack.pop() + " ");
+        }
+        System.out.println();
     }
 }
+
+
 
 
