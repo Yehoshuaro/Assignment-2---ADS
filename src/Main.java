@@ -1,32 +1,58 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Object[][] elements = new Object[100][100];
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
 
-        int rows = scanner.nextInt();
-
-        for (int i = 0; i < rows; i++) {
-            int numElements = scanner.nextInt();
-            for (int j = 0; j < numElements; j++) {
-                elements[i][j] = scanner.nextInt();
-            }
+        int numElements = sc.nextInt();
+        int[] numbers = new int[numElements];
+        for (int i = 0; i < numElements; i++) {
+            numbers[i] = sc.nextInt();
         }
-        int queries = scanner.nextInt();
+        int numQueries = sc.nextInt();
+        sc.nextLine();
 
-        for (int i = 0; i < queries; i++) {
-            int rowIndex = scanner.nextInt() - 1;
-            int elementIndex = scanner.nextInt() - 1;
-
-            if (rowIndex >= 0 && rowIndex < rows &&
-                    elementIndex >= 0 && elementIndex < elements[rowIndex].length) {
-                System.out.println (elements [rowIndex][elementIndex] );
+        for (int i = 0; i < numQueries; i++) {
+            String queryType = sc.nextLine();
+            if (queryType.equals("Insert")) {
+                int index = sc.nextInt();
+                int value = sc.nextInt();
+                numbers = insert(numbers, index, value);
             }
             else {
-                System.out.println("ERROR!");
+                int removeIndex = sc.nextInt();
+                numbers = remove(numbers, removeIndex);
             }
+            sc.nextLine();
         }
-        scanner.close();
+        for (int num : numbers) {
+            System.out.print(num + " ");
+        }
+    }
+
+    public static int[] insert(int[] arr, int index, int value) throws Exception {
+        if (index < 0 || index > arr.length) {
+            throw new Exception("Invalid insertion index");
+        }
+
+        int[] newArr = new int[arr.length + 1];
+        System.arraycopy(arr, 0, newArr, 0, index);
+
+        newArr[index] = value;
+        System.arraycopy(arr, index, newArr, index + 1, arr.length - index);
+
+        return newArr;
+    }
+    public static int[] remove(int[] arr, int index) throws Exception {
+        if (index < 0 || index >= arr.length) {
+            throw new Exception("Invalid removal index");
+        }
+
+        int[] newArr = new int[arr.length - 1];
+        System.arraycopy(arr, 0, newArr, 0, index);
+        System.arraycopy(arr, index + 1, newArr, index, arr.length - index - 1);
+
+        return newArr;
     }
 }
+
